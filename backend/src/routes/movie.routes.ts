@@ -3,6 +3,7 @@ import {
   getMovies,
   getMovie,
   createMovieHandler,
+  updateMovieHandler,
   deleteMovieHandler,
 } from "../controllers/movie.controller";
 

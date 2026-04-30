@@ -1,7 +1,7 @@
 type GenreTypes = "comedy" | "horror" | "drama";
 
 export type Movie = {
-  id: string;
+  id: number;
   title: string;
   year: number;
   description: string;
