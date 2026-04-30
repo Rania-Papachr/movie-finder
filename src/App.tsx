@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 
+type GenreTypes = "comedy" | "horror" | "drama";
+
 type Movie = {
-  id: number;
+  id: string;
   title: string;
   year: number;
+  description: string;
+  rating: number;
+  genre: GenreTypes;
+  imageUrl: string;
 };
 
 function App() {
@@ -46,6 +52,7 @@ function App() {
           <div key={movie.id}>
             <h3>{movie.title}</h3>
             <h4>{movie.year}</h4>
+            <img src={movie.imageUrl} />
           </div>
         ))
       )}

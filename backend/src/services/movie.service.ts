@@ -1,6 +1,7 @@
-import { movies } from "../db/movies.db";
+import { db } from "../db";
 import { Movie } from "../types/Movie";
 
 export const getAllMovies = (): Movie[] => {
-  return movies;
+  const stmt = db.prepare("SELECT * FROM movies");
+  return stmt.all() as Movie[];
 };
