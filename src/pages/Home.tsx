@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import MovieCards from "../components/MovieCards";
-import type { Movie } from "./types/movie";
+import type { Movie } from "../types/movie";
 
 const Home = () => {
   const [message, setMessage] = useState("");

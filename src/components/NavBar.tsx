@@ -1,4 +1,6 @@
-import * as React from "react";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,15 +15,33 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const drawerWidth = 240;
-const navItems = ["Home", "Categories", "Add Movie", "Favorites"];
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "Add Movie", path: "/add-movie" },
+  { label: "Favorites", path: "/favorites" },
+];
+
+const categories = ["Drama", "Comedy", "Horror"];
 
 const NavBar = () => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const drawer = (
@@ -32,9 +52,13 @@ const NavBar = () => {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+          <ListItem key={item.label} disablePadding>
+            <ListItemButton
+              component={NavLink}
+              to={item.path}
+              sx={{ textAlign: "center" }}
+            >
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -61,14 +85,44 @@ const NavBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Movie Finder
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
+              <Button
+                key={item.label}
+                component={NavLink}
+                to={item.path}
+                sx={{
+                  color: "#fff",
+                  "&.active": {
+                    color: "#ff7043",
+                    fontWeight: "bold",
+                  },
+                }}
+              >
+                {item.label}
               </Button>
             ))}
+            <Button onClick={handleMenuOpen} sx={{ color: "#fff" }}>
+              Categories
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {categories.map((category) => (
+                <MenuItem
+                  key={category}
+                  component={NavLink}
+                  to={`/categories/${category}`}
+                  onClick={handleMenuClose}
+                >
+                  {category}
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>
