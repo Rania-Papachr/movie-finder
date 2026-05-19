@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -6,6 +7,7 @@ import {
   Typography,
   Chip,
   IconButton,
+  Button,
 } from "@mui/material";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -111,7 +113,14 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           {movie.description}
         </Typography> */}
 
-        <Box sx={{ mt: 1 }}>
+        <Box
+          sx={{
+            mt: 1.5,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Chip
             label={movie.genre}
             size="small"
@@ -121,6 +130,15 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
               textTransform: "capitalize",
             }}
           />
+
+          <Button
+            component={NavLink}
+            to={`/movie/${movie.id}`}
+            size="small"
+            variant="contained"
+          >
+            Details
+          </Button>
         </Box>
       </CardContent>
     </Card>
