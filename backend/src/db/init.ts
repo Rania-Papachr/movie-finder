@@ -37,7 +37,7 @@ export const initDB = () => {
         "Two imprisoned men bond over years.",
         9.3,
         "drama",
-        "https://via.placeholder.com/300x450?text=Shawshank",
+        "https://picsum.photos/300/450",
       ],
       [
         "Forrest Gump",
@@ -45,7 +45,7 @@ export const initDB = () => {
         "Life story of a simple man.",
         8.8,
         "drama",
-        "https://via.placeholder.com/300x450?text=Forrest+Gump",
+        "https://picsum.photos/300/450",
       ],
 
       // 😂 Comedy
@@ -55,7 +55,7 @@ export const initDB = () => {
         "A man discovers a magical mask.",
         6.9,
         "comedy",
-        "https://via.placeholder.com/300x450?text=The+Mask",
+        "https://picsum.photos/300/450",
       ],
       [
         "Superbad",
@@ -63,7 +63,7 @@ export const initDB = () => {
         "High school friends on a wild night.",
         7.6,
         "comedy",
-        "https://via.placeholder.com/300x450?text=Superbad",
+        "https://picsum.photos/300/450",
       ],
 
       // 😱 Horror
@@ -73,7 +73,7 @@ export const initDB = () => {
         "Paranormal investigators help a family.",
         7.5,
         "horror",
-        "https://via.placeholder.com/300x450?text=Conjuring",
+        "https://picsum.photos/300/450",
       ],
       [
         "Get Out",
@@ -81,7 +81,7 @@ export const initDB = () => {
         "A disturbing visit to a girlfriend's family.",
         7.7,
         "horror",
-        "https://via.placeholder.com/300x450?text=Get+Out",
+        "https://picsum.photos/300/450",
       ],
     ];
 
