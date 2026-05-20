@@ -25,7 +25,7 @@ const navItems = [
   { label: "Favorites", path: "/favorites" },
 ];
 
-const categories = ["Drama", "Comedy", "Horror"];
+const categories = ["drama", "comedy", "horror"];
 
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -118,6 +118,7 @@ const NavBar = () => {
                   component={NavLink}
                   to={`/categories/${category}`}
                   onClick={handleMenuClose}
+                  sx={{ textTransform: "capitalize" }}
                 >
                   {category}
                 </MenuItem>
