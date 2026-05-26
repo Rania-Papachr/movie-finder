@@ -99,20 +99,6 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           {movie.year}
         </Typography>
 
-        {/* <Typography
-          variant="body2"
-          sx={{
-            mt: 1,
-            opacity: 0.7,
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >
-          {movie.description}
-        </Typography> */}
-
         <Box
           sx={{
             mt: 1.5,
