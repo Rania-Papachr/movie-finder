@@ -15,7 +15,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   };
 
   const handleEdit = () => {
-    navigate(`/edit/${movie.id}`);
+    navigate(`/edit-movie/${movie.id}`);
   };
 
   const handleDelete = () => {

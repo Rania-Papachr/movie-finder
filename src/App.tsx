@@ -6,6 +6,7 @@ import CategoryMovies from "./pages/CategoryMovies";
 import AddMovie from "./pages/AddMovie";
 import Favorites from "./pages/Favorites";
 import MovieDetails from "./pages/MovieDetails";
+import EditMovie from "@/pages/EditMovie";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/add-movie" element={<AddMovie />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/edit-movie/:id" element={<EditMovie />} />
       </Routes>
     </>
   );
