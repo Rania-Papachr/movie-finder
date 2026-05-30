@@ -5,6 +5,8 @@ import {
   createMovie,
   updateMovie,
   deleteMovie,
+  toggleFavorite,
+  getFavoriteMovies,
 } from "../services/movie.service";
 
 export const getMovies = (req: Request, res: Response) => {
@@ -51,6 +53,7 @@ export const createMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
+      favorite: 0,
     });
 
     res.status(201).json(newMovie);
@@ -83,6 +86,7 @@ export const updateMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
+      favorite: 0,
     });
 
     if (!updatedMovie) {
@@ -114,5 +118,37 @@ export const deleteMovieHandler = (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to delete movie" });
+  }
+};
+
+export const toggleFavoriteHandler = (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({
+      message: "Invalid movie ID",
+    });
+  }
+
+  const movie = toggleFavorite(id);
+
+  if (!movie) {
+    return res.status(404).json({
+      message: "Movie not found",
+    });
+  }
+
+  res.status(200).json(movie);
+};
+
+export const getFavorites = (req: Request, res: Response) => {
+  try {
+    const favorites = getFavoriteMovies();
+
+    res.status(200).json(favorites);
+  } catch {
+    res.status(500).json({
+      message: "Failed to fetch favorites",
+    });
   }
 };

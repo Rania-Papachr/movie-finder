@@ -1,14 +1,19 @@
-import { Card, Box, Typography, Chip, IconButton } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Card, Box, Typography, Chip, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import type { Movie } from "../types/movie";
+import { toggleFavorite } from "../services/movieApi";
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const navigate = useNavigate();
+
+  const [isFav, setIsFav] = useState(movie.favorite);
 
   const handleDetails = () => {
     navigate(`/movie/${movie.id}`);
@@ -20,6 +25,14 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
 
   const handleDelete = () => {
     console.log("delete", movie.id);
+  };
+
+  const handleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevents opening details page
+
+    const updatedMovie = await toggleFavorite(Number(movie.id)); //call my api function and give it the id of the movie i clicked on.
+
+    setIsFav(updatedMovie.favorite);
   };
 
   const actionButtonStyle = {
@@ -212,8 +225,8 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           zIndex: 20,
         }}
       >
-        <IconButton sx={actionButtonStyle}>
-          <FavoriteBorderIcon />
+        <IconButton sx={actionButtonStyle} onClick={handleFavorite}>
+          {isFav ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
 
         <IconButton sx={actionButtonStyle} onClick={handleEdit}>
