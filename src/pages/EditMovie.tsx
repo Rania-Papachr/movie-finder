@@ -26,12 +26,7 @@ const EditMovie = () => {
     return <h1>Loading...</h1>;
   }
 
-  return (
-    <>
-      <h1>Edit Movie </h1>
-      <MovieForm mode="edit" initialData={movie} />
-    </>
-  );
+  return <MovieForm mode="edit" initialData={movie} />;
 };
 
 export default EditMovie;
