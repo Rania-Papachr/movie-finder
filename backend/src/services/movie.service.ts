@@ -15,8 +15,8 @@ type NewMovie = Omit<Movie, "id">;
 
 export const createMovie = (movie: NewMovie): Movie => {
   const stmt = db.prepare(`
-    INSERT INTO movies (title, year, description, rating, genre, imageUrl)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO movies (title, year, description, rating, genre, imageUrl, favorite)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
   const result = stmt.run(
@@ -26,6 +26,7 @@ export const createMovie = (movie: NewMovie): Movie => {
     movie.rating,
     movie.genre,
     movie.imageUrl,
+    movie.favorite,
   );
 
   return {
@@ -69,4 +70,37 @@ export const deleteMovie = (id: number): boolean => {
   const result = stmt.run(id);
 
   return result.changes > 0;
+};
+
+export const toggleFavorite = (id: number): Movie | null => {
+  const movie = getMovieById(id);
+
+  if (!movie) {
+    return null;
+  }
+
+  const newFavorite = movie.favorite ? 0 : 1;
+
+  const stmt = db.prepare(`
+    UPDATE movies
+    SET favorite = ?
+    WHERE id = ?
+  `);
+
+  stmt.run(newFavorite, id);
+
+  return {
+    ...movie,
+    favorite: newFavorite,
+  };
+};
+
+export const getFavoriteMovies = (): Movie[] => {
+  const stmt = db.prepare(`
+    SELECT *
+    FROM movies
+    WHERE favorite = 1
+  `);
+
+  return stmt.all() as Movie[];
 };

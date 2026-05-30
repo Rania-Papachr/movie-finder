@@ -7,11 +7,12 @@ export const initDB = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       year TEXT NOT NULL,
-      description TEXT,
-      rating REAL,
-      genre TEXT,
-      imageUrl TEXT
-    )
+      description TEXT NOT NULL,
+      rating REAL NOT NULL,
+      genre TEXT NOT NULL,
+      imageUrl TEXT NOT NULL,
+      favorite INTEGER DEFAULT 0 
+ )
   `;
 
   db.prepare(createTableQuery).run();
