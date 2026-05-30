@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import MovieCards from "../components/MovieCards";
 import type { Movie } from "../types/movie";
+import { Box, Button, Typography } from "@mui/material";
 
 const Home = () => {
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000")
-      .then((res) => setMessage(res.data.message))
-      .catch((err) => console.error("Error fetching API:", err));
-  }, []);
 
   useEffect(() => {
     axios
@@ -29,63 +25,30 @@ const Home = () => {
       });
   }, []);
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/movies/1").then((res) => {
-      console.log(res.data);
-    });
-  }, []);
+  if (isLoading) return <Typography>Loading...</Typography>;
 
-  const newMovie: Movie = {
-    title: "Test",
-    year: 1996,
-    description: "bcaofao",
-    genre: "comedy",
-    imageUrl: "https://picsum.photos/300/450",
-    rating: 6,
-  };
+  if (movies.length === 0) {
+    return (
+      <Box>
+        <Typography>
+          No movies found. Please add some movies to see them here.
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => {
+            navigate("/add-movie");
+          }}
+        >
+          Add Movie
+        </Button>
+      </Box>
+    );
+  }
 
-  const onSubmit = () => {
-    axios.post("http://localhost:5000/movies", newMovie).then((res) => {
-      console.log(res);
-    });
-  };
-  const onDelete = () => {
-    axios.delete("http://localhost:5000/movies/6").then((res) => {
-      console.log(res);
-    });
-  };
-
-  const onEdit = () => {
-    axios.put("http://localhost:5000/movies/2", newMovie).then((res) => {
-      console.log(res);
-    });
-  };
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>🎬 Movie Finder</h1>
-
-      <p>Backend says:</p>
-      <h2>{message || "Loading..."}</h2>
-
-      <button onClick={onSubmit}>Create</button>
-      <button onClick={onDelete}>Delete</button>
-      <button onClick={onEdit}>Edit</button>
-
-      {movies.length > 0 && <MovieCards movies={movies} />}
-
-      <h1>Movies</h1>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        movies?.map((movie) => (
-          <div key={movie.id}>
-            <h3>{movie.title}</h3>
-            <h4>{movie.year}</h4>
-            <img src={movie.imageUrl} />
-          </div>
-        ))
-      )}
-    </div>
+    <Box>
+      <MovieCards movies={movies} />
+    </Box>
   );
 };
 

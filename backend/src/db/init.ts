@@ -6,7 +6,7 @@ export const initDB = () => {
     CREATE TABLE IF NOT EXISTS movies (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
-      year INTEGER NOT NULL,
+      year TEXT NOT NULL,
       description TEXT,
       rating REAL,
       genre TEXT,
@@ -33,7 +33,7 @@ export const initDB = () => {
       // 🎭 Drama
       [
         "The Shawshank Redemption",
-        1994,
+        "1994",
         "Two imprisoned men bond over years.",
         9.3,
         "drama",
@@ -41,7 +41,7 @@ export const initDB = () => {
       ],
       [
         "Forrest Gump",
-        1994,
+        "1994",
         "Life story of a simple man.",
         8.8,
         "drama",
@@ -51,7 +51,7 @@ export const initDB = () => {
       // 😂 Comedy
       [
         "The Mask",
-        1994,
+        "1994",
         "A man discovers a magical mask.",
         6.9,
         "comedy",
@@ -59,7 +59,7 @@ export const initDB = () => {
       ],
       [
         "Superbad",
-        2007,
+        "2007",
         "High school friends on a wild night.",
         7.6,
         "comedy",
@@ -69,7 +69,7 @@ export const initDB = () => {
       // 😱 Horror
       [
         "The Conjuring",
-        2013,
+        "2013",
         "Paranormal investigators help a family.",
         7.5,
         "horror",
@@ -77,7 +77,7 @@ export const initDB = () => {
       ],
       [
         "Get Out",
-        2017,
+        "2017",
         "A disturbing visit to a girlfriend's family.",
         7.7,
         "horror",
