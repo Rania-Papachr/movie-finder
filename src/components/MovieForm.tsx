@@ -16,6 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { movieSchema, type MovieFormData } from "@/schemas/movie";
+import MovieTextField from "./MovieTextField";
 
 export type MovieData = {
   id: string;
@@ -105,18 +106,11 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
           {/* TITLE */}
 
-          <Controller
+          <MovieTextField
             name="title"
+            label="Title"
             control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                label="Title"
-                {...field}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-                required
-              />
-            )}
+            required
           />
 
           <Box
@@ -126,19 +120,11 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             }}
           >
             {/* YEAR */}
-
-            <Controller
+            <MovieTextField
               name="year"
+              label="Year"
               control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  label="Year"
-                  {...field}
-                  error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
-                  required
-                />
-              )}
+              required
             />
             {/* RATING */}
 
@@ -181,7 +167,17 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
           {/* DESCRIPTION */}
 
-          <Controller
+          <MovieTextField
+            name="description"
+            label="Description"
+            control={control}
+            multiline
+            rows={4}
+            placeholder="Write a brief description of the movie..."
+            required
+          />
+
+          {/* <Controller
             name="description"
             control={control}
             render={({ field, fieldState }) => (
@@ -198,7 +194,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
                 required
               />
             )}
-          />
+          /> */}
 
           {/* IMAGE URL */}
 
