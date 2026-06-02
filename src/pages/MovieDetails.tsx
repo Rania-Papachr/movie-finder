@@ -13,17 +13,20 @@ const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
-    axios
-      .get(`http://localhost:5000/movies/${id}`)
-      .then((res) => {
+    const fetchMovie = async () => {
+      if (!id) return;
+
+      try {
+        const res = await axios.get(`http://localhost:5000/movies/${id}`);
         setMovie(res.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchMovie();
   }, [id]);
 
   if (isLoading) {

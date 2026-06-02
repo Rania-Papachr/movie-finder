@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import MovieForm from "@/components/MovieForm";
-
 import type { Movie } from "@/types/movie";
 
 const EditMovie = () => {
@@ -12,14 +11,16 @@ const EditMovie = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/movies/${id}`)
-      .then((res) => {
+    const fetchMovie = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/movies/${id}`);
         setMovie(res.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
-      });
+      }
+    };
+
+    fetchMovie();
   }, [id]);
 
   if (!movie) {
