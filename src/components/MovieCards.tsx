@@ -4,9 +4,10 @@ import MovieCard from "./MovieCard";
 
 type Props = {
   movies: Movie[];
+  onDelete: (id: string | number) => void;
 };
 
-const MovieCards = ({ movies }: Props) => {
+const MovieCards = ({ movies, onDelete }: Props) => {
   return (
     <Box
       component="section"
@@ -20,7 +21,7 @@ const MovieCards = ({ movies }: Props) => {
     >
       {movies.map((movie) => (
         <Box key={movie.id} sx={{ width: 250 }}>
-          <MovieCard movie={movie} />
+          <MovieCard movie={movie} onDelete={onDelete} />
         </Box>
       ))}
     </Box>

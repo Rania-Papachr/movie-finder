@@ -12,6 +12,10 @@ const Home = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const handleDeleteMovie = (id: string | number) => {
+    setMovies((prev) => prev.filter((movie) => movie.id !== id));
+  };
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -48,7 +52,7 @@ const Home = () => {
 
   return (
     <Box>
-      <MovieCards movies={movies} />
+      <MovieCards movies={movies} onDelete={handleDeleteMovie} />
     </Box>
   );
 };

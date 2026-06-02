@@ -7,13 +7,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
+import ConfirmDialog from "../components/ConfirmDialog";
 import type { Movie } from "../types/movie";
-import { toggleFavorite } from "../services/movieApi";
+import { toggleFavorite, deleteMovie } from "../services/movieApi";
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const MovieCard = ({
+  movie,
+  onDelete,
+}: {
+  movie: Movie;
+  onDelete?: (id: string | number) => void; //
+}) => {
   const navigate = useNavigate();
 
   const [isFav, setIsFav] = useState(movie.favorite);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const handleDetails = () => {
     navigate(`/movie/${movie.id}`);
@@ -23,8 +31,17 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
     navigate(`/edit-movie/${movie.id}`);
   };
 
-  const handleDelete = () => {
-    console.log("delete", movie.id);
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCancelDelete = () => setOpenDeleteDialog(false);
+
+  const handleConfirmDelete = async () => {
+    await deleteMovie(movie.id);
+    setOpenDeleteDialog(false);
+    onDelete?.(movie.id); //use parent state
   };
 
   const handleFavorite = async (e: React.MouseEvent) => {
@@ -234,7 +251,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
         </IconButton>
 
         <IconButton
-          onClick={handleDelete}
+          onClick={handleDeleteClick}
           sx={{
             ...actionButtonStyle,
 
@@ -247,6 +264,14 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           <DeleteIcon />
         </IconButton>
       </Box>
+      <ConfirmDialog
+        open={openDeleteDialog}
+        title="Delete Movie?"
+        description={`Are you sure you want to delete "${movie.title}"?`}
+        confirmText="Delete"
+        onCancel={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
     </Card>
   );
 };
