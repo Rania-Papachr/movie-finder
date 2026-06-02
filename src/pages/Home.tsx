@@ -13,16 +13,17 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/movies")
-      .then((res) => {
+    const fetchMovies = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/movies");
         setMovies(res.data);
         setIsLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setIsLoading(false);
         console.error("Error fetching API:", err);
-      });
+      }
+    };
+    fetchMovies();
   }, []);
 
   if (isLoading) return <Typography>Loading...</Typography>;

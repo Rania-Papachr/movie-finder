@@ -15,19 +15,23 @@ const CategoryMovies = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/movies")
-      .then((res) => {
+    const fetchMovies = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/movies");
+
         const filteredMovies = res.data.filter(
           (movie: Movie) => movie.genre === category,
         );
+
         setMovies(filteredMovies);
-        setIsLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchMovies();
   }, [category]);
 
   if (isLoading) {
