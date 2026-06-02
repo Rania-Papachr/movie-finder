@@ -1,5 +1,17 @@
 import axios from "axios";
-import { Button, Box, Typography, TextField, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Box,
+  Typography,
+  TextField,
+  Paper,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+} from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -15,6 +27,7 @@ type MovieFormProps = {
 };
 
 const MovieForm = ({ mode, initialData }: MovieFormProps) => {
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -51,6 +64,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
     } catch (error) {
       console.error("Error adding movie:", error);
     }
+    navigate("/");
   };
 
   return (
@@ -122,6 +136,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
                   {...field}
                   error={!!fieldState.error}
                   helperText={fieldState.error?.message}
+                  required
                 />
               )}
             />
@@ -138,6 +153,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
                   onChange={(e) => field.onChange(Number(e.target.value))}
                   error={!!fieldState.error}
                   helperText={fieldState.error?.message}
+                  required
                 />
               )}
             />
@@ -149,12 +165,17 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             name="genre"
             control={control}
             render={({ field, fieldState }) => (
-              <TextField
-                label="Genre"
-                {...field}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-              />
+              <FormControl fullWidth error={!!fieldState.error} required>
+                <InputLabel id="genre-label">Genre</InputLabel>
+
+                <Select {...field} labelId="genre-label" label="Genre">
+                  <MenuItem value="drama">Drama</MenuItem>
+                  <MenuItem value="comedy">Comedy</MenuItem>
+                  <MenuItem value="horror">Horror</MenuItem>
+                </Select>
+
+                <FormHelperText>{fieldState.error?.message}</FormHelperText>
+              </FormControl>
             )}
           />
 
@@ -167,10 +188,14 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               <TextField
                 label="Description"
                 multiline
+                placeholder="Write a brief description of the movie..."
                 rows={4}
                 {...field}
                 error={!!fieldState.error}
-                helperText={fieldState.error?.message}
+                helperText={
+                  fieldState.error?.message ?? `${field.value.length}/500`
+                }
+                required
               />
             )}
           />
