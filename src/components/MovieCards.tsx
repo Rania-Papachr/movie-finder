@@ -12,10 +12,11 @@ const MovieCards = ({ movies, onDelete }: Props) => {
     <Box
       component="section"
       sx={{
+        maxWidth: 1200,
+        mx: "auto",
         display: "flex",
         flexWrap: "wrap",
         gap: 3,
-
         justifyContent: "center",
       }}
     >

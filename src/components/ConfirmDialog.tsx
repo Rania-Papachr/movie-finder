@@ -27,17 +27,42 @@ const ConfirmDialog = ({
   onCancel,
 }: ConfirmDialogProps) => {
   return (
-    <Dialog open={open} onClose={onCancel}>
-      <DialogTitle>{title}</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onCancel}
+      //slotProps.paper is used to style the Dialog's Paper component not the Dialog itsefl.
+      slotProps={{
+        paper: {
+          sx: {
+            bgcolor: "background.paper",
+            borderRadius: 3,
+            p: 2,
+          },
+        },
+      }}
+    >
+      <DialogTitle sx={{ fontWeight: 600 }}>{title}</DialogTitle>
 
       <DialogContent>
-        <DialogContentText>{description}</DialogContentText>
+        <DialogContentText sx={{ color: "text.secondary" }}>
+          {description}
+        </DialogContentText>
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onCancel}>{cancelText}</Button>
-
-        <Button onClick={onConfirm} color="error" variant="contained">
+        <Button onClick={onCancel} sx={{ color: "text.secondary" }}>
+          {cancelText}
+        </Button>
+        <Button
+          onClick={onConfirm}
+          variant="contained"
+          sx={{
+            bgcolor: "rgba(239, 68, 68, 0.9)",
+            "&:hover": {
+              bgcolor: "rgba(239, 68, 68, 1)",
+            },
+          }}
+        >
           {confirmText}
         </Button>
       </DialogActions>
