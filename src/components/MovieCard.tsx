@@ -55,7 +55,7 @@ const MovieCard = ({
   const actionButtonStyle = {
     width: 40,
     height: 40,
-    color: "#fff",
+    color: "text.primary",
     backgroundColor: "rgba(0,0,0,0.45)",
     backdropFilter: "blur(8px)",
     transition: "0.2s ease",
@@ -72,8 +72,8 @@ const MovieCard = ({
         position: "relative",
         overflow: "hidden",
         borderRadius: 4,
-        backgroundColor: "#1e1e1e",
-        color: "#fff",
+        bgcolor: "background.paper",
+        color: "text.primary",
 
         transition: "transform 0.25s ease, box-shadow 0.25s ease",
 
@@ -125,7 +125,6 @@ const MovieCard = ({
             position: "absolute",
             inset: 0,
             pointerEvents: "none",
-
             background:
               "linear-gradient(to top, rgba(0,0,0,0.92) 15%, rgba(0,0,0,0.2) 55%, transparent)",
           }}
@@ -146,7 +145,7 @@ const MovieCard = ({
             opacity: 0,
             transition: "opacity 0.25s ease",
 
-            backgroundColor: "rgba(0,0,0,0.28)",
+            bgcolor: "rgba(0,0,0,0.4)",
             backdropFilter: "blur(2px)",
 
             pointerEvents: "none",
@@ -205,9 +204,10 @@ const MovieCard = ({
               label={movie.genre}
               size="small"
               sx={{
-                backgroundColor: "rgba(255,255,255,0.08)",
-                color: "#fff",
+                bgcolor: "rgba(59,130,246,0.12)",
+                color: "primary.main",
                 textTransform: "capitalize",
+                fontWeight: 500,
               }}
             />
 
@@ -215,8 +215,9 @@ const MovieCard = ({
               label={`⭐ ${movie.rating.toFixed(1)}`}
               size="small"
               sx={{
-                backgroundColor: "rgba(0,0,0,0.5)",
-                color: "#fff",
+                bgcolor: "rgba(59,130,246,0.15)",
+                color: "primary.main",
+                fontWeight: 600,
               }}
             />
           </Box>
@@ -243,7 +244,11 @@ const MovieCard = ({
         }}
       >
         <IconButton sx={actionButtonStyle} onClick={handleFavorite}>
-          {isFav ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          {isFav ? (
+            <FavoriteIcon sx={{ color: "primary.main" }} />
+          ) : (
+            <FavoriteBorderIcon sx={{ color: "text.primary" }} />
+          )}
         </IconButton>
 
         <IconButton sx={actionButtonStyle} onClick={handleEdit}>
@@ -257,7 +262,7 @@ const MovieCard = ({
 
             "&:hover": {
               transform: "scale(1.08)",
-              backgroundColor: "rgba(255,80,80,0.45)",
+              backgroundColor: "rgba(239, 68, 68, 0.2)",
             },
           }}
         >

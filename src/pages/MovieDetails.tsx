@@ -49,16 +49,14 @@ const MovieDetails = () => {
 
   return (
     <>
-      <div>
-        <h1>Movie Details Page</h1>
-        <p>Movie id: {id}</p>
-      </div>
       <Box
         sx={{
           p: 4,
           display: "flex",
           gap: 4,
           flexWrap: "wrap",
+          maxWidth: 1100,
+          mx: "auto",
         }}
       >
         <Box
@@ -73,12 +71,19 @@ const MovieDetails = () => {
           }}
         />
 
-        <Box sx={{ maxWidth: 600 }}>
+        <Box
+          sx={{
+            maxWidth: 600,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
           <Typography variant="h3" sx={{ fontWeight: "bold" }}>
             {movie.title}
           </Typography>
 
-          <Typography variant="h6" sx={{ opacity: 0.7, mt: 1 }}>
+          <Typography variant="h6" sx={{ color: "text.secondary", mt: 1 }}>
             {movie.year}
           </Typography>
 
@@ -86,8 +91,8 @@ const MovieDetails = () => {
             <Chip
               label={movie.genre}
               sx={{
-                backgroundColor: "#333",
-                color: "#fff",
+                bgcolor: "rgba(59,130,246,0.12)",
+                color: "primary.main",
                 textTransform: "capitalize",
               }}
             />
@@ -95,8 +100,9 @@ const MovieDetails = () => {
             <Chip
               label={`⭐ ${movie.rating}`}
               sx={{
-                backgroundColor: "#e53935",
-                color: "#fff",
+                bgcolor: "rgba(59,130,246,0.15)",
+                color: "primary.main",
+                fontWeight: 600,
               }}
             />
           </Box>
@@ -104,9 +110,9 @@ const MovieDetails = () => {
           <Typography
             variant="body1"
             sx={{
-              mt: 3,
+              color: "text.primary",
               lineHeight: 1.8,
-              opacity: 0.9,
+              mt: 3,
             }}
           >
             {movie.description}

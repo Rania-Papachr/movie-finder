@@ -75,17 +75,17 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p: 2,
+        bgcolor: "background.default",
       }}
     >
       <Paper
         elevation={8}
         sx={{
           width: "100%",
-          maxWidth: 500,
-          p: 4,
+          maxWidth: 800,
+          p: 5,
           borderRadius: 4,
-          border: "1px solid rgba(255,255,255,0.08)",
+          bgcolor: "background.paper",
         }}
       >
         <Box
@@ -99,7 +99,12 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
         >
           <Typography
             variant="h4"
-            sx={{ fontWeight: "bold", textAlign: "center" }}
+            sx={{
+              fontWeight: 700,
+              textAlign: "center",
+              mb: 1,
+              letterSpacing: 0.5,
+            }}
           >
             {mode === "add" ? "Add Movie" : "Edit Movie"}
           </Typography>
@@ -154,7 +159,15 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               <FormControl fullWidth error={!!fieldState.error} required>
                 <InputLabel id="genre-label">Genre</InputLabel>
 
-                <Select {...field} labelId="genre-label" label="Genre">
+                <Select
+                  {...field}
+                  labelId="genre-label"
+                  label="Genre"
+                  sx={{
+                    borderRadius: 2,
+                    backgroundColor: "rgba(255,255,255,0.03)",
+                  }}
+                >
                   <MenuItem value="drama">Drama</MenuItem>
                   <MenuItem value="comedy">Comedy</MenuItem>
                   <MenuItem value="horror">Horror</MenuItem>
@@ -224,7 +237,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               disabled={!isDirty || !isValid}
               sx={{
                 py: 1.2,
-                fontWeight: "bold",
+                fontWeight: 600,
                 borderRadius: 2,
                 width: "100%",
               }}
@@ -239,6 +252,8 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               sx={{
                 borderRadius: 2,
                 width: "100%",
+                color: "text.secondary",
+                borderColor: "rgba(255,255,255,0.15)",
               }}
             >
               Reset

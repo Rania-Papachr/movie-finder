@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import {
   AppBar,
   Box,
-  CssBaseline,
   Divider,
   Drawer,
   List,
@@ -48,8 +47,15 @@ const NavBar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+      <Typography
+        variant="h6"
+        sx={{
+          my: 2,
+          color: "primary.main",
+          fontWeight: 700,
+        }}
+      >
+        Movie Finder
       </Typography>
       <Divider />
       <List>
@@ -58,9 +64,36 @@ const NavBar = () => {
             <ListItemButton
               component={NavLink}
               to={item.path}
-              sx={{ textAlign: "center" }}
+              sx={{
+                textAlign: "center",
+                "&.active": {
+                  color: "primary.main",
+                  fontWeight: 600,
+                },
+              }}
             >
               <ListItemText primary={item.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        <Divider />
+        {categories.map((category) => (
+          <ListItem key={category} disablePadding>
+            <ListItemButton
+              component={NavLink}
+              to={`/categories/${category}`}
+              sx={{
+                textAlign: "center",
+                "&.active": {
+                  color: "primary.main",
+                  fontWeight: 600,
+                },
+              }}
+            >
+              <ListItemText
+                primary={category}
+                sx={{ textTransform: "capitalize" }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -70,8 +103,7 @@ const NavBar = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: "#121212" }}>
+      <AppBar component="nav" sx={{ bgColor: "background.paper" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -85,28 +117,38 @@ const NavBar = () => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+              color: "primary.main",
+              fontWeight: 700,
+            }}
           >
             Movie Finder
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box
+            sx={{
+              display: { xs: "none", sm: "flex" },
+              gap: 1,
+            }}
+          >
             {navItems.map((item) => (
               <Button
                 key={item.label}
                 component={NavLink}
                 to={item.path}
                 sx={{
-                  color: "#fff",
+                  color: "text.primary",
                   "&.active": {
-                    color: "#ff7043",
-                    fontWeight: "bold",
+                    color: "primary.main",
+                    fontWeight: 600,
                   },
                 }}
               >
                 {item.label}
               </Button>
             ))}
-            <Button onClick={handleMenuOpen} sx={{ color: "#fff" }}>
+            <Button onClick={handleMenuOpen} sx={{ color: "text.primary" }}>
               Categories
             </Button>
             <Menu
@@ -129,7 +171,7 @@ const NavBar = () => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Toolbar /> //
+      <Toolbar />
       <nav>
         <Drawer
           variant="temporary"

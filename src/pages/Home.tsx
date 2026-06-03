@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import MovieCards from "../components/MovieCards";
 import type { Movie } from "../types/movie";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -30,11 +30,30 @@ const Home = () => {
     fetchMovies();
   }, []);
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          py: 8,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   if (movies.length === 0) {
     return (
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
         <Typography>
           No movies found. Please add some movies to see them here.
         </Typography>
@@ -51,7 +70,21 @@ const Home = () => {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        mx: "auto",
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          mb: 4,
+          fontWeight: 700,
+          textAlign: "center",
+        }}
+      >
+        Movies
+      </Typography>
       <MovieCards movies={movies} onDelete={handleDeleteMovie} />
     </Box>
   );
