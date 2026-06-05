@@ -10,6 +10,7 @@ import App from "@/App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    {/* SnackBarProvider */}
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />

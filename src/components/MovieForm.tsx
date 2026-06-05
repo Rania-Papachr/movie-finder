@@ -1,17 +1,18 @@
+import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   Box,
   Typography,
-  TextField,
   Paper,
   MenuItem,
   Select,
   FormControl,
   InputLabel,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,7 +29,8 @@ type MovieFormProps = {
 };
 
 const MovieForm = ({ mode, initialData }: MovieFormProps) => {
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {
     control,
     handleSubmit,
@@ -48,24 +50,22 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
   });
 
   const onSubmit = async (data: MovieFormData) => {
+    setIsLoading(true);
     try {
       if (mode === "add") {
-        const res = await axios.post("http://localhost:5000/movies", data);
-        console.log("Movie added");
-        console.log(res.data);
+        await axios.post("http://localhost:5000/movies", data);
+        reset();
       } else {
-        const res = await axios.put(
+        await axios.put(
           `http://localhost:5000/movies/${initialData?.id}`,
           data,
         );
-
-        console.log("Movie updated");
-        console.log(res.data);
       }
     } catch (error) {
       console.error("Error adding movie:", error);
+    } finally {
+      setIsLoading(false);
     }
-    navigate("/");
   };
 
   return (
@@ -111,12 +111,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
           {/* TITLE */}
 
-          <MovieTextField
-            name="title"
-            label="Title"
-            control={control}
-            required
-          />
+          <MovieTextField name="title" label="Title" control={control} />
 
           <Box
             sx={{
@@ -125,28 +120,14 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             }}
           >
             {/* YEAR */}
-            <MovieTextField
-              name="year"
-              label="Year"
-              control={control}
-              required
-            />
+            <MovieTextField name="year" label="Year" control={control} />
             {/* RATING */}
 
-            <Controller
+            <MovieTextField
               name="rating"
+              label="Rating"
               control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  label="Rating"
-                  type="number"
-                  value={field.value}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
-                  required
-                />
-              )}
+              type="number"
             />
           </Box>
 
@@ -187,42 +168,11 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             multiline
             rows={4}
             placeholder="Write a brief description of the movie..."
-            required
           />
-
-          {/* <Controller
-            name="description"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                label="Description"
-                multiline
-                placeholder="Write a brief description of the movie..."
-                rows={4}
-                {...field}
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message ?? `${field.value.length}/500`
-                }
-                required
-              />
-            )}
-          /> */}
 
           {/* IMAGE URL */}
 
-          <Controller
-            name="imageUrl"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                label="Image URL"
-                {...field}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message}
-              />
-            )}
-          />
+          <MovieTextField name="imageUrl" label="Image URL" control={control} />
 
           <Box
             sx={{
@@ -234,13 +184,14 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             <Button
               type="submit"
               variant="contained"
-              disabled={!isDirty || !isValid}
+              disabled={!isDirty || !isValid || isLoading}
               sx={{
                 py: 1.2,
                 fontWeight: 600,
                 borderRadius: 2,
                 width: "100%",
               }}
+              endIcon={isLoading && <CircularProgress size={20} />}
             >
               {mode === "add" ? "Add Movie" : "Save Changes"}
             </Button>

@@ -16,7 +16,7 @@ const MovieCard = ({
   onDelete,
 }: {
   movie: Movie;
-  onDelete?: (id: string | number) => void; //
+  onDelete?: (id: string | number) => void;
 }) => {
   const navigate = useNavigate();
 
