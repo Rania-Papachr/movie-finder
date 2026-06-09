@@ -14,13 +14,14 @@ import { toggleFavorite, deleteMovie } from "../services/movieApi";
 const MovieCard = ({
   movie,
   onDelete,
+  onToggleFavorite,
 }: {
   movie: Movie;
   onDelete?: (id: string | number) => void;
+  onToggleFavorite?: (movie: Movie) => void;
 }) => {
   const navigate = useNavigate();
 
-  const [isFav, setIsFav] = useState(movie.favorite);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -53,11 +54,11 @@ const MovieCard = ({
   };
 
   const handleFavorite = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // prevents opening details page
+    e.stopPropagation();
 
-    const updatedMovie = await toggleFavorite(Number(movie.id)); //call my api function and give it the id of the movie i clicked on.
+    const updatedMovie = await toggleFavorite(movie.id);
 
-    setIsFav(updatedMovie.favorite);
+    onToggleFavorite?.(updatedMovie);
   };
 
   const actionButtonStyle = {
@@ -252,7 +253,7 @@ const MovieCard = ({
         }}
       >
         <IconButton sx={actionButtonStyle} onClick={handleFavorite}>
-          {isFav ? (
+          {movie.favorite ? (
             <FavoriteIcon sx={{ color: "primary.main" }} />
           ) : (
             <FavoriteBorderIcon sx={{ color: "text.primary" }} />

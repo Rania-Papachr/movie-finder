@@ -19,6 +19,12 @@ const CategoryMovies = () => {
     setMovies((prev) => prev.filter((movie) => movie.id !== id));
   };
 
+  const handleToggleFavorite = (updatedMovie: Movie) => {
+    setMovies((prev) =>
+      prev.map((m) => (m.id === updatedMovie.id ? updatedMovie : m)),
+    );
+  };
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -56,7 +62,11 @@ const CategoryMovies = () => {
         {category} Movies
       </Typography>
       {movies.length > 0 ? (
-        <MovieCards movies={movies} onDelete={handleDeleteMovie} />
+        <MovieCards
+          movies={movies}
+          onDelete={handleDeleteMovie}
+          onToggleFavorite={handleToggleFavorite}
+        />
       ) : (
         <Typography>No movies found</Typography>
       )}

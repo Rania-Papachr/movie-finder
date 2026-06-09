@@ -3,12 +3,31 @@ import { Movie } from "../types/Movie";
 
 export const getAllMovies = (): Movie[] => {
   const stmt = db.prepare("SELECT * FROM movies");
-  return stmt.all() as Movie[];
+
+  const movies = stmt.all() as (Omit<Movie, "favorite"> & {
+    favorite: number;
+  })[];
+
+  return movies.map((movie) => ({
+    ...movie,
+    favorite: Boolean(movie.favorite),
+  }));
 };
 
 export const getMovieById = (id: number): Movie | undefined => {
   const stmt = db.prepare("SELECT * FROM movies WHERE id = ?");
-  return stmt.get(id) as Movie | undefined;
+  const movie = stmt.get(id) as
+    | (Omit<Movie, "favorite"> & { favorite: number })
+    | undefined;
+
+  if (!movie) {
+    return undefined;
+  }
+
+  return {
+    ...movie,
+    favorite: Boolean(movie.favorite),
+  };
 };
 
 type NewMovie = Omit<Movie, "id">;
@@ -79,15 +98,15 @@ export const toggleFavorite = (id: number): Movie | null => {
     return null;
   }
 
-  const newFavorite = movie.favorite ? 0 : 1;
-
+  const newFavorite = !movie.favorite;
+  const dbValue = newFavorite ? 1 : 0;
   const stmt = db.prepare(`
     UPDATE movies
     SET favorite = ?
     WHERE id = ?
   `);
 
-  stmt.run(newFavorite, id);
+  stmt.run(dbValue, id);
 
   return {
     ...movie,
@@ -102,5 +121,12 @@ export const getFavoriteMovies = (): Movie[] => {
     WHERE favorite = 1
   `);
 
-  return stmt.all() as Movie[];
+  const movies = stmt.all() as (Omit<Movie, "favorite"> & {
+    favorite: number;
+  })[];
+
+  return movies.map((movie) => ({
+    ...movie,
+    favorite: true,
+  }));
 };
