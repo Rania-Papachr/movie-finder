@@ -22,6 +22,7 @@ const MovieCard = ({
 
   const [isFav, setIsFav] = useState(movie.favorite);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDetails = () => {
     navigate(`/movie/${movie.id}`);
@@ -39,9 +40,16 @@ const MovieCard = ({
   const handleCancelDelete = () => setOpenDeleteDialog(false);
 
   const handleConfirmDelete = async () => {
-    await deleteMovie(movie.id);
-    setOpenDeleteDialog(false);
-    onDelete?.(movie.id); //use parent state
+    setIsDeleting(true);
+    try {
+      await deleteMovie(movie.id);
+      setOpenDeleteDialog(false);
+      onDelete?.(movie.id); //use parent state}
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleFavorite = async (e: React.MouseEvent) => {
@@ -276,6 +284,7 @@ const MovieCard = ({
         confirmText="Delete"
         onCancel={handleCancelDelete}
         onConfirm={handleConfirmDelete}
+        loading={isDeleting}
       />
     </Card>
   );
