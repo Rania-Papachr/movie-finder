@@ -5,19 +5,15 @@ import {
   Box,
   Typography,
   Paper,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  FormHelperText,
   CircularProgress,
 } from "@mui/material";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { movieSchema, type MovieFormData } from "@/schemas/movie";
 import MovieTextField from "./MovieTextField";
+import MovieSelectField from "@/components/MovieSelectField";
 
 export type MovieData = {
   id: string;
@@ -27,6 +23,24 @@ type MovieFormProps = {
   mode: "add" | "edit";
   initialData?: MovieData;
 };
+
+const MIN_YEAR = 1888;
+const MAX_YEAR = new Date().getFullYear();
+
+const yearOptions = Array.from({ length: MAX_YEAR - MIN_YEAR + 1 }, (_, i) => {
+  const year = String(MAX_YEAR - i);
+
+  return {
+    value: year,
+    label: year,
+  };
+});
+
+const genreOptions = [
+  { value: "drama", label: "Drama" },
+  { value: "comedy", label: "Comedy" },
+  { value: "horror", label: "Horror" },
+];
 
 const MovieForm = ({ mode, initialData }: MovieFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -120,9 +134,18 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             }}
           >
             {/* YEAR */}
-            <MovieTextField name="year" label="Year" control={control} />
-            {/* RATING */}
+            <MovieSelectField
+              name="year"
+              label="Year"
+              control={control}
+              options={yearOptions}
+              sx={{
+                borderRadius: 2,
+                backgroundColor: "rgba(255,255,255,0.03)",
+              }}
+            />
 
+            {/* RATING */}
             <MovieTextField
               name="rating"
               label="Rating"
@@ -133,30 +156,15 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
           {/* GENRE */}
 
-          <Controller
+          <MovieSelectField
             name="genre"
+            label="Genre"
             control={control}
-            render={({ field, fieldState }) => (
-              <FormControl fullWidth error={!!fieldState.error} required>
-                <InputLabel id="genre-label">Genre</InputLabel>
-
-                <Select
-                  {...field}
-                  labelId="genre-label"
-                  label="Genre"
-                  sx={{
-                    borderRadius: 2,
-                    backgroundColor: "rgba(255,255,255,0.03)",
-                  }}
-                >
-                  <MenuItem value="drama">Drama</MenuItem>
-                  <MenuItem value="comedy">Comedy</MenuItem>
-                  <MenuItem value="horror">Horror</MenuItem>
-                </Select>
-
-                <FormHelperText>{fieldState.error?.message}</FormHelperText>
-              </FormControl>
-            )}
+            options={genreOptions}
+            sx={{
+              borderRadius: 2,
+              backgroundColor: "rgba(255,255,255,0.03)",
+            }}
           />
 
           {/* DESCRIPTION */}
