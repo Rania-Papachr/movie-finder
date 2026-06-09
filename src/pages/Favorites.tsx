@@ -4,6 +4,7 @@ import axios from "axios";
 import { Box, Typography } from "@mui/material";
 import type { Movie } from "../types/movie";
 import MovieCard from "@/components/MovieCard";
+import PageLoader from "@/components/PageLoader";
 
 const getFavorites = async () => {
   const res = await axios.get("http://localhost:5000/movies/favorites");
@@ -30,11 +31,7 @@ const Favorites = () => {
   }, []);
 
   if (loading) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Typography>Loading...</Typography>
-      </Box>
-    );
+    return <PageLoader message="Loading favorite movies..." />;
   }
 
   return (

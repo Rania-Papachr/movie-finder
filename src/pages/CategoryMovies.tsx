@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import { Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import MovieCards from "../components/MovieCards";
 
 import type { Movie } from "../types/movie";
+import PageLoader from "@/components/PageLoader";
 
 const CategoryMovies = () => {
   const { category } = useParams();
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleDeleteMovie = (id: string | number) => {
+    setMovies((prev) => prev.filter((movie) => movie.id !== id));
+  };
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -35,17 +40,7 @@ const CategoryMovies = () => {
   }, [category]);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: 10,
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <PageLoader message={`Loading ${category} movies... `} />;
   }
 
   return (
@@ -61,7 +56,7 @@ const CategoryMovies = () => {
         {category} Movies
       </Typography>
       {movies.length > 0 ? (
-        <MovieCards movies={movies} />
+        <MovieCards movies={movies} onDelete={handleDeleteMovie} />
       ) : (
         <Typography>No movies found</Typography>
       )}

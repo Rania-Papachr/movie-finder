@@ -193,12 +193,17 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               }}
               endIcon={isLoading && <CircularProgress size={20} />}
             >
-              {mode === "add" ? "Add Movie" : "Save Changes"}
+              {isLoading
+                ? "Saving..."
+                : mode === "add"
+                  ? "Add Movie"
+                  : "Save Changes"}
             </Button>
             <Button
               type="button"
               //type button to prevent the default type submit Reset
               variant="outlined"
+              disabled={isLoading}
               onClick={() => reset()}
               sx={{
                 borderRadius: 2,

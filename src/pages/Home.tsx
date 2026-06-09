@@ -3,8 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import MovieCards from "../components/MovieCards";
+import PageLoader from "../components/PageLoader";
 import type { Movie } from "../types/movie";
-import { Box, Button, Typography, CircularProgress } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -31,17 +32,7 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          py: 8,
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <PageLoader message="Movies are loading, please wait..." />;
   }
 
   if (movies.length === 0) {

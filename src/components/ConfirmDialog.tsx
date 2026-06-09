@@ -5,6 +5,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  CircularProgress,
 } from "@mui/material";
 
 type ConfirmDialogProps = {
@@ -13,6 +14,7 @@ type ConfirmDialogProps = {
   description?: string;
   confirmText?: string;
   cancelText?: string;
+  loading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
@@ -23,13 +25,14 @@ const ConfirmDialog = ({
   description = "",
   confirmText = "Delete",
   cancelText = "Cancel",
+  loading = false,
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) => {
   return (
     <Dialog
       open={open}
-      onClose={onCancel}
+      onClose={loading ? undefined : onCancel}
       //slotProps.paper is used to style the Dialog's Paper component not the Dialog itsefl.
       slotProps={{
         paper: {
@@ -56,6 +59,9 @@ const ConfirmDialog = ({
         <Button
           onClick={onConfirm}
           variant="contained"
+          endIcon={
+            loading ? <CircularProgress size={18} color="inherit" /> : null
+          }
           sx={{
             bgcolor: "rgba(239, 68, 68, 0.9)",
             "&:hover": {

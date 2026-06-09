@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import { Box, Typography, Chip, CircularProgress } from "@mui/material";
+import { Box, Typography, Chip } from "@mui/material";
 
 import type { Movie } from "../types/movie";
+import PageLoader from "@/components/PageLoader";
 
 const MovieDetails = () => {
   const { id } = useParams(); //Give me the value from the URL parameter called id.
@@ -30,17 +31,7 @@ const MovieDetails = () => {
   }, [id]);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: 10,
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <PageLoader message="Loading movie details..." />;
   }
 
   if (!movie) {
