@@ -5,9 +5,10 @@ import MovieCard from "./MovieCard";
 type Props = {
   movies: Movie[];
   onDelete: (id: string | number) => void;
+  onToggleFavorite: (movie: Movie) => void;
 };
 
-const MovieCards = ({ movies, onDelete }: Props) => {
+const MovieCards = ({ movies, onDelete, onToggleFavorite }: Props) => {
   return (
     <Box
       component="section"
@@ -22,7 +23,11 @@ const MovieCards = ({ movies, onDelete }: Props) => {
     >
       {movies.map((movie) => (
         <Box key={movie.id} sx={{ width: 250 }}>
-          <MovieCard movie={movie} onDelete={onDelete} />
+          <MovieCard
+            movie={movie}
+            onDelete={onDelete}
+            onToggleFavorite={onToggleFavorite}
+          />
         </Box>
       ))}
     </Box>

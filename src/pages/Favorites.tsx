@@ -15,19 +15,24 @@ const Favorites = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const loadFavorites = async () => {
+    setLoading(true);
+    try {
+      const data = await getFavorites();
+      setMovies(data);
+    } catch (error) {
+      console.error("Failed to load favorites", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadFavorites = async () => {
-      try {
-        const data = await getFavorites();
-        setMovies(data);
-      } catch (error) {
-        console.error("Failed to load favorites", error);
-      } finally {
-        setLoading(false);
-      }
+    const init = async () => {
+      await loadFavorites();
     };
 
-    loadFavorites();
+    init();
   }, []);
 
   if (loading) {
@@ -52,7 +57,11 @@ const Favorites = () => {
           }}
         >
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              onToggleFavorite={loadFavorites}
+            />
           ))}
         </Box>
       )}
