@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import { Box, Typography } from "@mui/material";
 
@@ -8,6 +7,7 @@ import MovieCards from "../components/MovieCards";
 
 import type { Movie } from "../types/movie";
 import PageLoader from "@/components/PageLoader";
+import { getMovies } from "@/services/movieApi";
 
 const CategoryMovies = () => {
   const { category } = useParams();
@@ -28,11 +28,12 @@ const CategoryMovies = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/movies");
+        setIsLoading(true);
+        const data = await getMovies();
 
-        const filteredMovies = res.data.filter(
-          (movie: Movie) => movie.genre === category,
-        );
+        const filteredMovies = category
+          ? data.filter((movie: Movie) => movie.genre === category)
+          : data;
 
         setMovies(filteredMovies);
       } catch (err) {

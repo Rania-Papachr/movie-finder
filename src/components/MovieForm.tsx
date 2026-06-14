@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import {
   Button,
   Box,
@@ -14,9 +13,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { movieSchema, type MovieFormData } from "@/schemas/movie";
 import MovieTextField from "./MovieTextField";
 import MovieSelectField from "@/components/MovieSelectField";
+import { createMovie, updateMovie } from "@/services/movieApi";
 
 export type MovieData = {
-  id: string;
+  id: number;
 } & MovieFormData;
 
 type MovieFormProps = {
@@ -56,7 +56,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
     defaultValues: initialData || {
       title: "",
       year: "",
-      genre: "",
+      genre: " ",
       description: "",
       rating: 0,
       imageUrl: "",
@@ -65,18 +65,16 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
   const onSubmit = async (data: MovieFormData) => {
     setIsLoading(true);
+
     try {
       if (mode === "add") {
-        await axios.post("http://localhost:5000/movies", data);
+        await createMovie(data);
         reset();
-      } else {
-        await axios.put(
-          `http://localhost:5000/movies/${initialData?.id}`,
-          data,
-        );
+      } else if (initialData?.id) {
+        await updateMovie(initialData.id, data);
       }
     } catch (error) {
-      console.error("Error adding movie:", error);
+      console.error("Error saving movie:", error);
     } finally {
       setIsLoading(false);
     }

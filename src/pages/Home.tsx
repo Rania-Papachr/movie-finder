@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { Box, Button, Typography } from "@mui/material";
 import MovieCards from "../components/MovieCards";
 import PageLoader from "../components/PageLoader";
 import type { Movie } from "../types/movie";
-import { Box, Button, Typography } from "@mui/material";
+
+import { getMovies } from "@/services/movieApi";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,12 +27,13 @@ const Home = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/movies");
-        setMovies(res.data);
+        const data = await getMovies();
+        setMovies(data);
         setIsLoading(false);
       } catch (err) {
+        console.error("Error fetching movies:", err);
+      } finally {
         setIsLoading(false);
-        console.error("Error fetching API:", err);
       }
     };
     fetchMovies();
