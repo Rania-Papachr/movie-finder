@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import { Box, Typography } from "@mui/material";
 import type { Movie } from "../types/movie";
 import MovieCard from "@/components/MovieCard";
 import PageLoader from "@/components/PageLoader";
-
-const getFavorites = async () => {
-  const res = await axios.get("http://localhost:5000/movies/favorites");
-  return res.data;
-};
+import { getFavoriteMovies } from "@/services/movieApi";
 
 const Favorites = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -18,7 +13,7 @@ const Favorites = () => {
   const loadFavorites = async () => {
     setLoading(true);
     try {
-      const data = await getFavorites();
+      const data = await getFavoriteMovies();
       setMovies(data);
     } catch (error) {
       console.error("Failed to load favorites", error);

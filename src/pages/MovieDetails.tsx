@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import { Box, Typography, Chip } from "@mui/material";
 
 import type { Movie } from "../types/movie";
 import PageLoader from "@/components/PageLoader";
+import { getMovieById } from "@/services/movieApi";
 
 const MovieDetails = () => {
   const { id } = useParams(); //Give me the value from the URL parameter called id.
@@ -18,8 +18,9 @@ const MovieDetails = () => {
       if (!id) return;
 
       try {
-        const res = await axios.get(`http://localhost:5000/movies/${id}`);
-        setMovie(res.data);
+        setIsLoading(true);
+        const data = await getMovieById(Number(id));
+        setMovie(data);
       } catch (err) {
         console.error(err);
       } finally {

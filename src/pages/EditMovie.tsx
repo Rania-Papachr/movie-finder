@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import MovieForm from "@/components/MovieForm";
 import type { Movie } from "@/types/movie";
 import PageLoader from "@/components/PageLoader";
 import { Typography } from "@mui/material";
+import { getMovieById } from "@/services/movieApi";
 
 const EditMovie = () => {
   const { id } = useParams();
@@ -15,9 +15,10 @@ const EditMovie = () => {
 
   useEffect(() => {
     const fetchMovie = async () => {
+      setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/movies/${id}`);
-        setMovie(res.data);
+        const data = await getMovieById(Number(id));
+        setMovie(data);
       } catch (err) {
         console.error(err);
       } finally {
