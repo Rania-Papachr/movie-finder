@@ -7,13 +7,14 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { movieSchema, type MovieFormData } from "@/schemas/movie";
 import MovieTextField from "./MovieTextField";
 import MovieSelectField from "@/components/MovieSelectField";
 import { createMovie, updateMovie } from "@/services/movieApi";
+import MovieCard from "@/components/MovieCard";
 
 export type MovieData = {
   id: number;
@@ -56,12 +57,24 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
     defaultValues: initialData || {
       title: "",
       year: "",
-      genre: " ",
+      genre: "",
       description: "",
       rating: 0,
       imageUrl: "",
     },
   });
+
+  const watchedValues = useWatch({ control });
+
+  const previewMovie = {
+    id: initialData?.id ?? 0,
+    title: watchedValues.title || "Movie title",
+    year: watchedValues.year || "2026",
+    genre: watchedValues.genre || "Genre",
+    description: watchedValues.description || "Movie description...",
+    rating: watchedValues.rating || 0,
+    imageUrl: watchedValues.imageUrl || "",
+  };
 
   const onSubmit = async (data: MovieFormData) => {
     setIsLoading(true);
@@ -88,6 +101,8 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
         justifyContent: "center",
         alignItems: "center",
         bgcolor: "background.default",
+        gap: 4,
+        px: 2,
       }}
     >
       <Paper
@@ -223,6 +238,21 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
           </Box>
         </Box>
       </Paper>
+      <Box
+        sx={{
+          width: 400,
+          display: { xs: "none", md: "block" }, // hides on mobile
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ mb: 2, fontWeight: 600, textAlign: "center" }}
+        >
+          Live Preview
+        </Typography>
+
+        <MovieCard movie={previewMovie} />
+      </Box>
     </Box>
   );
 };
