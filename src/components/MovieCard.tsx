@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import { Card, Box, Typography, Chip, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,6 +22,8 @@ const MovieCard = ({
   onToggleFavorite?: (movie: Movie) => void;
 }) => {
   const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -44,10 +47,11 @@ const MovieCard = ({
     setIsDeleting(true);
     try {
       await deleteMovie(movie.id);
+      enqueueSnackbar("Movie deleted.", { variant: "success" });
       setOpenDeleteDialog(false);
       onDelete?.(movie.id); //use parent state}
-    } catch (error) {
-      console.error(error);
+    } catch {
+      enqueueSnackbar("Could not delete movie.", { variant: "error" });
     } finally {
       setIsDeleting(false);
     }
@@ -56,9 +60,24 @@ const MovieCard = ({
   const handleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const updatedMovie = await toggleFavorite(movie.id);
+    try {
+      const updatedMovie = await toggleFavorite(movie.id);
 
-    onToggleFavorite?.(updatedMovie);
+      onToggleFavorite?.(updatedMovie);
+
+      const isNowFavorite = updatedMovie.favorite;
+
+      enqueueSnackbar(
+        isNowFavorite ? "Added to favorites " : "Removed from favorites",
+        {
+          variant: isNowFavorite ? "success" : "info",
+        },
+      );
+    } catch {
+      enqueueSnackbar("Could not update favorite.", {
+        variant: "error",
+      });
+    }
   };
 
   const actionButtonStyle = {
@@ -114,7 +133,7 @@ const MovieCard = ({
 
         <Box
           component="img"
-          src={movie.imageUrl}
+          src={movie.imageUrl || undefined}
           alt={movie.title}
           onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
             e.currentTarget.src = "https://placehold.co/300x450?text=No+Image";

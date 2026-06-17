@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import MovieForm from "@/components/MovieForm";
 import type { Movie } from "@/types/movie";
@@ -9,6 +10,8 @@ import { getMovieById } from "@/services/movieApi";
 
 const EditMovie = () => {
   const { id } = useParams();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
@@ -21,13 +24,17 @@ const EditMovie = () => {
         setMovie(data);
       } catch (err) {
         console.error(err);
+
+        enqueueSnackbar("Failed to load movie details.", {
+          variant: "error",
+        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchMovie();
-  }, [id]);
+  }, [id, enqueueSnackbar]);
 
   if (loading) {
     return <PageLoader message="Movie is loading..." />;

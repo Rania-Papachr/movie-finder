@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import { Box, Button, Typography } from "@mui/material";
 import MovieCards from "../components/MovieCards";
@@ -10,6 +11,8 @@ import { getMovies } from "@/services/movieApi";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -30,14 +33,17 @@ const Home = () => {
         const data = await getMovies();
         setMovies(data);
         setIsLoading(false);
+
+        enqueueSnackbar("Movies loaded successfully.", { variant: "success" });
       } catch (err) {
         console.error("Error fetching movies:", err);
+        enqueueSnackbar("Failed to load movies.", { variant: "error" });
       } finally {
         setIsLoading(false);
       }
     };
     fetchMovies();
-  }, []);
+  }, [enqueueSnackbar]);
 
   if (isLoading) {
     return <PageLoader message="Movies are loading, please wait..." />;

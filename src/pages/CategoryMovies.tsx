@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import { Box, Typography } from "@mui/material";
 
@@ -11,6 +12,8 @@ import { getMovies } from "@/services/movieApi";
 
 const CategoryMovies = () => {
   const { category } = useParams();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,15 +39,23 @@ const CategoryMovies = () => {
           : data;
 
         setMovies(filteredMovies);
+
+        enqueueSnackbar("Movies loaded", {
+          variant: "success",
+        });
       } catch (err) {
         console.error(err);
+
+        enqueueSnackbar("Failed to load movies.", {
+          variant: "error",
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchMovies();
-  }, [category]);
+  }, [category, enqueueSnackbar]);
 
   if (isLoading) {
     return <PageLoader message={`Loading ${category} movies... `} />;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 import { Box, Typography } from "@mui/material";
 import type { Movie } from "../types/movie";
@@ -7,6 +8,8 @@ import PageLoader from "@/components/PageLoader";
 import { getFavoriteMovies } from "@/services/movieApi";
 
 const Favorites = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,8 +18,15 @@ const Favorites = () => {
     try {
       const data = await getFavoriteMovies();
       setMovies(data);
+      enqueueSnackbar("Favorite movies loaded successfully.", {
+        variant: "success",
+      });
     } catch (error) {
       console.error("Failed to load favorites", error);
+
+      enqueueSnackbar("Failed to load favorite movies.", {
+        variant: "error",
+      });
     } finally {
       setLoading(false);
     }

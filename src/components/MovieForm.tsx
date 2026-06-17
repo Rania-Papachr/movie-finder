@@ -1,4 +1,7 @@
 import { useState } from "react";
+
+import { useSnackbar } from "notistack";
+
 import {
   Button,
   Box,
@@ -44,6 +47,8 @@ const genreOptions = [
 ];
 
 const MovieForm = ({ mode, initialData }: MovieFormProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -82,12 +87,28 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
     try {
       if (mode === "add") {
         await createMovie(data);
+
+        enqueueSnackbar("Movie created successfully ", {
+          variant: "success",
+        });
+
         reset();
       } else if (initialData?.id) {
         await updateMovie(initialData.id, data);
+
+        enqueueSnackbar("Movie updated successfully ", {
+          variant: "success",
+        });
       }
     } catch (error) {
       console.error("Error saving movie:", error);
+
+      enqueueSnackbar(
+        mode === "add" ? "Failed to create movie." : "Failed to update movie.",
+        {
+          variant: "error",
+        },
+      );
     } finally {
       setIsLoading(false);
     }
