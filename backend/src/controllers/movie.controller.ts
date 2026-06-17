@@ -53,7 +53,7 @@ export const createMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
-      favorite: 0,
+      favorite: false,
     });
 
     res.status(201).json(newMovie);
@@ -86,7 +86,7 @@ export const updateMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
-      favorite: 0,
+      favorite: false,
     });
 
     if (!updatedMovie) {

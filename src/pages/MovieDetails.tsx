@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import { Box, Typography, Chip } from "@mui/material";
 
@@ -10,26 +11,41 @@ import { getMovieById } from "@/services/movieApi";
 const MovieDetails = () => {
   const { id } = useParams(); //Give me the value from the URL parameter called id.
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const [movie, setMovie] = useState<Movie | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovie = async () => {
-      if (!id) return;
-
+      if (!id) {
+        enqueueSnackbar("Invalid movie ID.", {
+          variant: "error",
+        });
+        setIsLoading(false);
+        return;
+      }
       try {
         setIsLoading(true);
         const data = await getMovieById(Number(id));
         setMovie(data);
+
+        enqueueSnackbar("Movie loaded successfully.", {
+          variant: "success",
+        });
       } catch (err) {
         console.error(err);
+
+        enqueueSnackbar("Failed to load movie details.", {
+          variant: "error",
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchMovie();
-  }, [id]);
+  }, [id, enqueueSnackbar]);
 
   if (isLoading) {
     return <PageLoader message="Loading movie details..." />;
