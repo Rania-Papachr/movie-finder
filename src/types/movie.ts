@@ -1,4 +1,6 @@
-export type GenreTypes = "comedy" | "horror" | "drama";
+export const genres = ["comedy", "horror", "drama"] as const;
+
+export type GenreTypes = (typeof genres)[number];
 
 export type Movie = {
   id: number;
@@ -6,7 +8,7 @@ export type Movie = {
   year: string;
   description: string;
   rating: number;
-  genre: GenreTypes;
+  genre: string;
   imageUrl: string;
   favorite: boolean;
 };

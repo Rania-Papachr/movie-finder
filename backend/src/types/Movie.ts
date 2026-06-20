@@ -8,5 +8,5 @@ export type Movie = {
   rating: number;
   genre: GenreTypes;
   imageUrl: string;
-  favorite: boolean;
+  favorite: number;
 };

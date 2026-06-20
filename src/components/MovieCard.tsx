@@ -16,10 +16,12 @@ const MovieCard = ({
   movie,
   onDelete,
   onToggleFavorite,
+  preview,
 }: {
   movie: Movie;
   onDelete?: (id: string | number) => void;
   onToggleFavorite?: (movie: Movie) => void;
+  preview?: boolean;
 }) => {
   const navigate = useNavigate();
 
@@ -106,8 +108,8 @@ const MovieCard = ({
         transition: "transform 0.25s ease, box-shadow 0.25s ease",
 
         "&:hover": {
-          transform: "translateY(-6px)",
-          boxShadow: "0 24px 50px rgba(0,0,0,0.45)",
+          transform: !preview ? "translateY(-6px)" : "none",
+          boxShadow: !preview ? "0 24px 50px rgba(0,0,0,0.45)" : "none",
         },
 
         "&:hover .hover-overlay": {
@@ -123,17 +125,16 @@ const MovieCard = ({
       {/* CLICK SURFACE */}
 
       <Box
-        onClick={handleDetails}
+        onClick={!preview ? handleDetails : () => {}}
         sx={{
           position: "relative",
-          cursor: "pointer",
+          cursor: !preview ? "pointer" : "default",
         }}
       >
         {/* IMAGE */}
-
         <Box
           component="img"
-          src={movie.imageUrl || undefined}
+          src={movie.imageUrl || "https://placehold.co/300x450?text=No+Image"}
           alt={movie.title}
           onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
             e.currentTarget.src = "https://placehold.co/300x450?text=No+Image";
@@ -145,9 +146,7 @@ const MovieCard = ({
             display: "block",
           }}
         />
-
         {/* GRADIENT */}
-
         <Box
           sx={{
             position: "absolute",
@@ -157,41 +156,40 @@ const MovieCard = ({
               "linear-gradient(to top, rgba(0,0,0,0.92) 15%, rgba(0,0,0,0.2) 55%, transparent)",
           }}
         />
-
         {/* HOVER */}
 
-        <Box
-          className="hover-overlay"
-          sx={{
-            position: "absolute",
-            inset: 0,
-
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-
-            opacity: 0,
-            transition: "opacity 0.25s ease",
-
-            bgcolor: "rgba(0,0,0,0.4)",
-            backdropFilter: "blur(2px)",
-
-            pointerEvents: "none",
-          }}
-        >
-          <Typography
-            variant="h6"
+        {!preview && (
+          <Box
+            className="hover-overlay"
             sx={{
-              fontWeight: 700,
-              letterSpacing: 1,
+              position: "absolute",
+              inset: 0,
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              opacity: 0,
+              transition: "opacity 0.25s ease",
+
+              bgcolor: "rgba(0,0,0,0.4)",
+              backdropFilter: "blur(2px)",
+
+              pointerEvents: "none",
             }}
           >
-            View Details
-          </Typography>
-        </Box>
-
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: 1,
+              }}
+            >
+              View Details
+            </Typography>
+          </Box>
+        )}
         {/* CONTENT */}
-
         <Box
           sx={{
             position: "absolute",
@@ -232,7 +230,7 @@ const MovieCard = ({
               label={movie.genre}
               size="small"
               sx={{
-                bgcolor: "rgba(59,130,246,0.12)",
+                bgcolor: "rgba(245,158,11,0.12)",
                 color: "primary.main",
                 textTransform: "capitalize",
                 fontWeight: 500,
@@ -243,7 +241,7 @@ const MovieCard = ({
               label={`⭐ ${movie.rating.toFixed(1)}`}
               size="small"
               sx={{
-                bgcolor: "rgba(59,130,246,0.15)",
+                bgcolor: "rgba(245,158,11,0.12)",
                 color: "primary.main",
                 fontWeight: 600,
               }}
@@ -254,49 +252,51 @@ const MovieCard = ({
 
       {/* ACTION */}
 
-      <Box
-        className="action-layer"
-        sx={{
-          position: "absolute",
-          top: 12,
-          right: 12,
-
-          display: "flex",
-          gap: 1,
-
-          opacity: 0,
-          transform: "translateY(-10px)",
-          transition: "all 0.22s ease",
-
-          zIndex: 20,
-        }}
-      >
-        <IconButton sx={actionButtonStyle} onClick={handleFavorite}>
-          {movie.favorite ? (
-            <FavoriteIcon sx={{ color: "primary.main" }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ color: "text.primary" }} />
-          )}
-        </IconButton>
-
-        <IconButton sx={actionButtonStyle} onClick={handleEdit}>
-          <EditIcon />
-        </IconButton>
-
-        <IconButton
-          onClick={handleDeleteClick}
+      {!preview && (
+        <Box
+          className="action-layer"
           sx={{
-            ...actionButtonStyle,
+            position: "absolute",
+            top: 12,
+            right: 12,
 
-            "&:hover": {
-              transform: "scale(1.08)",
-              backgroundColor: "rgba(239, 68, 68, 0.2)",
-            },
+            display: "flex",
+            gap: 1,
+
+            opacity: 0,
+            transform: "translateY(-10px)",
+            transition: "all 0.22s ease",
+
+            zIndex: 20,
           }}
         >
-          <DeleteIcon />
-        </IconButton>
-      </Box>
+          <IconButton sx={actionButtonStyle} onClick={handleFavorite}>
+            {movie.favorite ? (
+              <FavoriteIcon sx={{ color: "primary.main" }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ color: "text.primary" }} />
+            )}
+          </IconButton>
+
+          <IconButton sx={actionButtonStyle} onClick={handleEdit}>
+            <EditIcon />
+          </IconButton>
+
+          <IconButton
+            onClick={handleDeleteClick}
+            sx={{
+              ...actionButtonStyle,
+
+              "&:hover": {
+                transform: "scale(1.08)",
+                backgroundColor: "rgba(239, 68, 68, 0.2)",
+              },
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      )}
       <ConfirmDialog
         open={openDeleteDialog}
         title="Delete Movie?"

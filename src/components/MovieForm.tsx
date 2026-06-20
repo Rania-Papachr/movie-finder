@@ -2,13 +2,7 @@ import { useState } from "react";
 
 import { useSnackbar } from "notistack";
 
-import {
-  Button,
-  Box,
-  Typography,
-  Paper,
-  CircularProgress,
-} from "@mui/material";
+import { Button, Box, Typography, CircularProgress } from "@mui/material";
 
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,26 +53,33 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
   } = useForm<MovieFormData>({
     mode: "all",
     resolver: zodResolver(movieSchema),
-    defaultValues: initialData || {
-      title: "",
-      year: "",
-      genre: "",
-      description: "",
-      rating: 0,
-      imageUrl: "",
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          favorite: Boolean(initialData.favorite),
+        }
+      : {
+          title: "",
+          year: "",
+          genre: "",
+          description: "",
+          rating: 0,
+          imageUrl: "",
+          favorite: false,
+        },
   });
 
   const watchedValues = useWatch({ control });
 
   const previewMovie = {
     id: initialData?.id ?? 0,
-    title: watchedValues.title || "Movie title",
-    year: watchedValues.year || "2026",
-    genre: watchedValues.genre || "Genre",
-    description: watchedValues.description || "Movie description...",
+    title: watchedValues.title || "",
+    year: watchedValues.year || "",
+    genre: watchedValues.genre || "",
     rating: watchedValues.rating || 0,
+    description: watchedValues.description || "",
     imageUrl: watchedValues.imageUrl || "",
+    favorite: Boolean(watchedValues.favorite),
   };
 
   const onSubmit = async (data: MovieFormData) => {
@@ -86,7 +87,7 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
 
     try {
       if (mode === "add") {
-        await createMovie(data);
+        await createMovie({ ...data });
 
         enqueueSnackbar("Movie created successfully ", {
           variant: "success",
@@ -115,38 +116,44 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        bgcolor: "background.default",
-        gap: 4,
-        px: 2,
-      }}
-    >
-      <Paper
-        elevation={8}
+    <Box>
+      <Typography
+        variant="h4"
         sx={{
-          width: "100%",
-          maxWidth: 800,
-          p: 5,
-          borderRadius: 4,
-          bgcolor: "background.paper",
+          fontWeight: 700,
+          textAlign: "center",
+          mb: 6,
+          letterSpacing: 0.5,
+        }}
+      >
+        {mode === "add" ? "Add Movie" : "Edit Movie"}
+      </Typography>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          bgcolor: "background.default",
+          gap: 4,
         }}
       >
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
           sx={{
+            width: "100%",
+            maxWidth: 700,
+            p: 5,
+            borderRadius: 4,
+            bgcolor: "background.paper",
             display: "flex",
             flexDirection: "column",
             gap: 3,
           }}
         >
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
               fontWeight: 700,
               textAlign: "center",
@@ -154,7 +161,9 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
               letterSpacing: 0.5,
             }}
           >
-            {mode === "add" ? "Add Movie" : "Edit Movie"}
+            {mode === "add"
+              ? "Fill out the details below."
+              : "Update the movie details below."}
           </Typography>
 
           {/* TITLE */}
@@ -258,21 +267,40 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
             </Button>
           </Box>
         </Box>
-      </Paper>
-      <Box
-        sx={{
-          width: 400,
-          display: { xs: "none", md: "block" }, // hides on mobile
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ mb: 2, fontWeight: 600, textAlign: "center" }}
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: 600,
+            p: 5,
+            borderRadius: 4,
+            bgcolor: "background.paper",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
         >
-          Live Preview
-        </Typography>
-
-        <MovieCard movie={previewMovie} />
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              textAlign: "center",
+              mb: 1,
+              letterSpacing: 0.5,
+            }}
+          >
+            Live Preview
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Box sx={{ width: "100%", maxWidth: 350 }}>
+              <MovieCard movie={previewMovie} preview />
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

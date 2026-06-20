@@ -64,11 +64,13 @@ const CategoryMovies = () => {
   return (
     <Box sx={{ p: 4 }}>
       <Typography
-        variant="h3"
+        variant="h4"
         sx={{
           textTransform: "capitalize",
-          mb: 4,
+          fontWeight: 700,
           textAlign: "center",
+          mb: 6,
+          letterSpacing: 0.5,
         }}
       >
         {category} Movies

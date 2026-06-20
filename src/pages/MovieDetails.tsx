@@ -87,7 +87,7 @@ const MovieDetails = () => {
             gap: 2,
           }}
         >
-          <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             {movie.title}
           </Typography>
 
@@ -99,7 +99,7 @@ const MovieDetails = () => {
             <Chip
               label={movie.genre}
               sx={{
-                bgcolor: "rgba(59,130,246,0.12)",
+                bgcolor: "rgba(245,158,11,0.12)",
                 color: "primary.main",
                 textTransform: "capitalize",
               }}
@@ -108,7 +108,7 @@ const MovieDetails = () => {
             <Chip
               label={`⭐ ${movie.rating}`}
               sx={{
-                bgcolor: "rgba(59,130,246,0.15)",
+                bgcolor: "rgba(245,158,11,0.12)",
                 color: "primary.main",
                 fontWeight: 600,
               }}

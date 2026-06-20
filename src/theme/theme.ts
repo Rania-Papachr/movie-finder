@@ -5,17 +5,17 @@ export const theme = createTheme({
     mode: "dark",
 
     primary: {
-      main: "#3B82F6",
+      main: "#F59E0B", // your orange (good choice 👍)
     },
 
     background: {
-      default: "#121212",
-      paper: "#1E1E1E",
+      default: "#0F0F10", // slightly deeper than before
+      paper: "#18181B", // cleaner “card layer”
     },
 
     text: {
       primary: "#FFFFFF",
-      secondary: "#A0A0A0",
+      secondary: "#A1A1AA",
     },
   },
 
