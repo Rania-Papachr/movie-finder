@@ -10,7 +10,7 @@ export const getAllMovies = (): Movie[] => {
 
   return movies.map((movie) => ({
     ...movie,
-    favorite: Boolean(movie.favorite),
+    favorite: movie.favorite,
   }));
 };
 
@@ -26,7 +26,7 @@ export const getMovieById = (id: number): Movie | undefined => {
 
   return {
     ...movie,
-    favorite: Boolean(movie.favorite),
+    favorite: movie.favorite,
   };
 };
 
@@ -110,7 +110,7 @@ export const toggleFavorite = (id: number): Movie | null => {
 
   return {
     ...movie,
-    favorite: newFavorite,
+    favorite: newFavorite ? 1 : 0,
   };
 };
 
@@ -127,6 +127,6 @@ export const getFavoriteMovies = (): Movie[] => {
 
   return movies.map((movie) => ({
     ...movie,
-    favorite: true,
+    favorite: 1,
   }));
 };

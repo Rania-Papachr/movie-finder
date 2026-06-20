@@ -46,8 +46,16 @@ const Favorites = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        ❤️ Favorites
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 700,
+          textAlign: "center",
+          mb: 6,
+          letterSpacing: 0.5,
+        }}
+      >
+        Favorites
       </Typography>
 
       {movies.length === 0 ? (

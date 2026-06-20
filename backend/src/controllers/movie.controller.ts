@@ -37,7 +37,8 @@ export const getMovie = (req: Request, res: Response) => {
 };
 
 export const createMovieHandler = (req: Request, res: Response) => {
-  const { title, year, description, rating, genre, imageUrl } = req.body;
+  const { title, year, description, rating, genre, imageUrl, favorite } =
+    req.body;
 
   if (!title || !year || !genre || !imageUrl) {
     return res.status(400).json({
@@ -53,7 +54,7 @@ export const createMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
-      favorite: false,
+      favorite: favorite ? 1 : 0,
     });
 
     res.status(201).json(newMovie);
@@ -70,7 +71,8 @@ export const updateMovieHandler = (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid movie ID" });
   }
 
-  const { title, year, description, rating, genre, imageUrl } = req.body;
+  const { title, year, description, rating, genre, imageUrl, favorite } =
+    req.body;
 
   if (!title || !year || !genre || !imageUrl) {
     return res.status(400).json({
@@ -86,7 +88,7 @@ export const updateMovieHandler = (req: Request, res: Response) => {
       rating,
       genre,
       imageUrl,
-      favorite: false,
+      favorite: favorite ? 1 : 0,
     });
 
     if (!updatedMovie) {
