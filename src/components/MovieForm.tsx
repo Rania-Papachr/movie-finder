@@ -2,9 +2,16 @@ import { useState } from "react";
 
 import { useSnackbar } from "notistack";
 
-import { Button, Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  CircularProgress,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { movieSchema, type MovieFormData } from "@/schemas/movie";
@@ -224,6 +231,22 @@ const MovieForm = ({ mode, initialData }: MovieFormProps) => {
           {/* IMAGE URL */}
 
           <MovieTextField name="imageUrl" label="Image URL" control={control} />
+
+          <Controller
+            name="favorite"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                  />
+                }
+                label="Favorite"
+              />
+            )}
+          />
 
           <Box
             sx={{

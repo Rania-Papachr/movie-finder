@@ -18,9 +18,6 @@ const Favorites = () => {
     try {
       const data = await getFavoriteMovies();
       setMovies(data);
-      enqueueSnackbar("Favorite movies loaded successfully.", {
-        variant: "success",
-      });
     } catch (error) {
       console.error("Failed to load favorites", error);
 
@@ -70,11 +67,13 @@ const Favorites = () => {
           }}
         >
           {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              onToggleFavorite={loadFavorites}
-            />
+            <Box key={movie.id} sx={{ width: 250 }}>
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                onToggleFavorite={loadFavorites}
+              />
+            </Box>
           ))}
         </Box>
       )}
