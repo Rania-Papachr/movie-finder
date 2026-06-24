@@ -30,6 +30,11 @@ const MovieTextField = ({
           helperText={fieldState.error?.message}
           {...textFieldProps}
           required
+          onFocus={() => {
+            if (name === "rating" && field.value === 0) {
+              field.onChange(""); // clears the 0 when user clicks
+            }
+          }}
           onChange={(e) => {
             const value =
               type === "number"

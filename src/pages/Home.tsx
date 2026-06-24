@@ -33,8 +33,6 @@ const Home = () => {
         const data = await getMovies();
         setMovies(data);
         setIsLoading(false);
-
-        enqueueSnackbar("Movies loaded successfully.", { variant: "success" });
       } catch (err) {
         console.error("Error fetching movies:", err);
         enqueueSnackbar("Failed to load movies.", { variant: "error" });

@@ -39,10 +39,6 @@ const CategoryMovies = () => {
           : data;
 
         setMovies(filteredMovies);
-
-        enqueueSnackbar("Movies loaded", {
-          variant: "success",
-        });
       } catch (err) {
         console.error(err);
 
